@@ -26,11 +26,10 @@ var giorniInUnMese = date.daysInMonth();
 // ciclo for per stampare i giorni del mese (in base al mese)
 for (var i = 1; i < giorniInUnMese + 1; i++) {
   var singoliGiorni = i;
-  var mese = "Gennaio";
   var formatoData = date.format('YYYY-MM' + '-' + AggiungiZero(i));
   var context = {
       data: formatoData,
-      giorni: singoliGiorni + ' ' + mese
+      giorni: singoliGiorni
       };
       // template handlebars per i giorni
       var sourceGiorni = $("#giorni-template").html();
@@ -58,7 +57,7 @@ $.ajax({
         // aggiungo classe e festivita
         if (giorni == dateFestivita) {
           $(this).addClass('rosso');
-          $(this).append(' <span>' + nomiFestivita + '</span>');
+          $(this).append('<span>' + nomiFestivita + '</span>');
         }
       });
 
