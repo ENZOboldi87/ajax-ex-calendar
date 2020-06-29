@@ -12,16 +12,14 @@
   <body>
     <div class="container">
       <div class="calendario">
-        <div class="mese">
-
-        </div>
+        <div class="mese"></div>
         <ul></ul>
       </div>
     </div>
 
 
     <script id="giorni-template" type="text/x-handlebars-template">
-          <li>{{ giorni }}</li>
+          <li data-element="{{ data }}">{{ giorni }}</li>
     </script>
     <script id="mesi-template" type="text/x-handlebars-template">
           <h2>{{ mese }}</h2>
