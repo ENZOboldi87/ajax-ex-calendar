@@ -4,12 +4,15 @@
   box-sizing: border-box;
 }
 
+.container {
+  margin-top: 50px;
+}
+
 .rosso {
   color: red;
   position: relative;
 
 }
-
 
 ul li {
   width: 20%;
@@ -23,10 +26,8 @@ ul li {
   cursor: pointer;
 }
 
-
-span {
+p {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, 40%);
+  top: 70%;
+  margin-bottom: 0;
 }

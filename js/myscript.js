@@ -1,24 +1,34 @@
 $(document).ready(function() {
 
- // variabili delle date da cui bisogna partire il calendario
- var anno = 2018;
- var mese = 0;
- var giorno = 1;
-
-stampaMese(mese);
-giorniDiVacanze(mese);
+  // cambio i nomi dei mesi in Italiano
+  moment.locale('it');
 
 
-// $(document).on('click', '.successivo', function(){
-// /
-//
-//
-//
-// })
+  // variabili delle date da cui bisogna partire il calendario
 
-// mesi(date);
+  var anno = 2018;
+  var mese = 0;
+  var giorno = 1;
 
-// --------------FUNZIONI ---------------
+  // stampo i mesi e i giorni di vacanza
+  stampaMese(mese);
+  giorniDiVacanze(mese);
+
+  // al click sul bottone successivo
+  $(document).on('click', '.successivo', function(){
+    meseSuccessivo();
+    stampaMese(mese);
+    giorniDiVacanze(mese);
+  })
+
+  // al click sul bottone precedente
+  $(document).on('click', '.precedente', function(){
+    mesePrecedente();
+    stampaMese(mese);
+    giorniDiVacanze(mese);
+  })
+
+// --------------FUNZIONI --------------- //
 
 // funzione che aggiunge uno zero se un numero e minore di 10
 function AggiungiZero(number) {
@@ -31,24 +41,25 @@ function AggiungiZero(number) {
 
 // funzione che stampa i mesi
 function stampaMese(meseDiRiferimento) {
-
   // data di riferimento
   var date = moment({
     'month': meseDiRiferimento,
     'year' : anno
   })
 
+  console.log(anno);
   // quanti giorni ci sono in un mese
   var giorniInUnMese = date.daysInMonth();
-
+  // elimino di default i giorni dei mesi correnti
+  $('.giorni').remove();
   // ciclo for per stampare i giorni del mese (in base al mese)
   for (var i = 1; i < giorniInUnMese + 1; i++) {
     var singoliGiorni = i;
     var formatoData = date.format('YYYY-MM' + '-' + AggiungiZero(i));
     var context = {
-        data: formatoData,
-        giorni: singoliGiorni
-        };
+      data: formatoData,
+      giorni: singoliGiorni
+    };
     // template handlebars per i giorni
     var sourceGiorni = $("#giorni-template").html();
     var templateGiorni = Handlebars.compile(sourceGiorni);
@@ -56,16 +67,20 @@ function stampaMese(meseDiRiferimento) {
     $('ul').append(htmlGiorni);
     // fine template handlebars per i giorni
   };
-  // template handlebars per i mesi
-  var contenuto = {
-    mese: moment(date).format('MMMM')
-  };
-  var sourceMese = $("#mesi-template").html();
-  var templateMese = Handlebars.compile(sourceMese);
-  var htmlMesi = templateMese(contenuto);
-  $('.mese').append(htmlMesi);
-  // fine template mesi
 
+  // template handlebars per i mesi
+    // elimino di default il mese corrente
+    $('h2').text('');
+    // capitalizzo la prima lettera del mese
+    var meseCapital = (date.format('MMMM').charAt(0).toUpperCase() + date.format('MMMM').slice(1));
+    var contenuto = {
+      mese: meseCapital + ' ' + anno,
+    };
+    var sourceMese = $("#mesi-template").html();
+    var templateMese = Handlebars.compile(sourceMese);
+    var htmlMesi = templateMese(contenuto);
+    $('.mese').append(htmlMesi);
+  // fine template  handlebar per i mesi
 };
 
 // funzione per confrontare i dati con quelli ricevuti dall API
@@ -74,8 +89,11 @@ function giorniDiVacanze(meseDiRiferimento) {
   $.ajax({
     url: 'https://flynn.boolean.careers/exercises/api/holidays?year=2018&month=0',
     type: 'GET',
+    data: {
+      'year' : anno,
+      'month' : mese
+    },
     success: function (data) {
-
       // dati ricevuti dall API
       var data = data.response;
       // con un ciclo for stampo i dati ricevuti dall API
@@ -83,30 +101,35 @@ function giorniDiVacanze(meseDiRiferimento) {
         // per ogni elemento della lista confronto i dati
         $('.calendario ul li').each(function() {
           var giorni = $(this).attr('data-element');
-          console.log(giorni);
           var nomiFestivita = data[i].name;
           var dateFestivita = data[i].date;
-          // console.log(nomiFestivita);
           // se il giorno equivale ai giorni festivi provenienti dall API
           // aggiungo classe e festivita
           if (giorni === dateFestivita) {
             $(this).addClass('rosso');
-            $(this).append('<span>' + nomiFestivita + '</span>');
-            console.log('sono nel if');
+            $(this).append('<p>' + nomiFestivita + '</p>');
           }
         });
-
       }
     },
-
     error:(function() {
-      alert('errore');
+      alert('Attenzione Errore');
     })
-
   })
-
-
 }
 
+// funzione per scorrere al mese successivo
+function meseSuccessivo() {
+  mese++
+}
+
+// funzione per scorrere al mese precedente
+function mesePrecedente() {
+  mese--
+  if (mese === 0 ) {
+    console.log('prova');
+
+  }
+}
 
 });

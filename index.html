@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="css/mystyle.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://momentjs.com/downloads/moment.js"></script>
+    <script src="https://momentjs.com/downloads/moment-with-locales.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.js"></script>
     <title>Calendario Festivita</title>
   </head>
@@ -35,7 +35,7 @@
 
 
     <script id="giorni-template" type="text/x-handlebars-template">
-          <li data-element="{{ data }}">{{ giorni }}</li>
+          <li class="giorni" data-element="{{ data }}">{{ giorni }}</li>
     </script>
     <script id="mesi-template" type="text/x-handlebars-template">
           <h2>{{ mese }}</h2>
